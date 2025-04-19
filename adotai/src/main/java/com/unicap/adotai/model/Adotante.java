@@ -7,10 +7,9 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @Table(name = "adotante")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class Adotante extends Usuario {
 
     private String preferencia;
     private Integer pontuacao;
-
 }
