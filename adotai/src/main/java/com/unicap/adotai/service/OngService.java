@@ -13,6 +13,10 @@ public class OngService {
 
     private OngRepository repository;
 
+    public OngService(OngRepository repository) {
+        this.repository = repository;
+    }
+
     public Ong salvar(OngDTO dto) {
         Ong ong = new Ong();
         ong.setNome(dto.getNome());

@@ -2,9 +2,11 @@ package com.unicap.adotai.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,17 +32,4 @@ public class Animal {
     @ManyToOne
     @JoinColumn(name = "ong_id")
     private Ong ong;
-
-    @Override
-    public String toString() {
-        return "Animal{" +
-                "id =" + id +
-                ", nome ='" + nome + '\'' +
-                ", especie ='" + especie + '\'' +
-                ", idade =" + idade +
-                ", sexo ='" + sexo + '\'' +
-                ", data de entrada ='" + dtEntrada + '\'' +
-                ", castrado =" + castrado +
-                '}';
-    }
 }

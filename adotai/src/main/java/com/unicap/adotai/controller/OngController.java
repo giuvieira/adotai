@@ -15,17 +15,26 @@ import java.util.List;
 @RequestMapping("/ongs")
 public class OngController {
 
-    private OngService service;
+    private final OngService service;
 
-    @PostMapping
+    public OngController(OngService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/criar")
     public ResponseEntity<Ong> criar(@RequestBody @Valid OngDTO dto) {
         return ResponseEntity.ok(service.salvar(dto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Ong>> listarTodas() {
-        return ResponseEntity.ok(service.listarTodas());
+    @GetMapping("/listar")
+    public ResponseEntity<List<Ong>> listar() {
+        List<Ong> ongs = service.listarTodas();
+        if (ongs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ongs);
     }
+    
 
     @GetMapping("/{id}")
     public ResponseEntity<Ong> buscarPorId(@PathVariable Long id) {
