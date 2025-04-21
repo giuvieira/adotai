@@ -3,7 +3,6 @@ package com.unicap.adotai.service;
 import com.unicap.adotai.dto.AdotanteDTO;
 import com.unicap.adotai.model.Adotante;
 import com.unicap.adotai.repository.AdotanteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Optional;
 @Service
 public class AdotanteService {
 
-    @Autowired
     private AdotanteRepository repository;
 
     public Adotante salvar(AdotanteDTO dto) {

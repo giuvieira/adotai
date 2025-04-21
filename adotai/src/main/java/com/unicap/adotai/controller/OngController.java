@@ -3,7 +3,9 @@ package com.unicap.adotai.controller;
 import com.unicap.adotai.dto.OngDTO;
 import com.unicap.adotai.model.Ong;
 import com.unicap.adotai.service.OngService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +15,10 @@ import java.util.List;
 @RequestMapping("/ongs")
 public class OngController {
 
-    @Autowired
     private OngService service;
 
     @PostMapping
-    public ResponseEntity<Ong> criar(@RequestBody OngDTO dto) {
+    public ResponseEntity<Ong> criar(@RequestBody @Valid OngDTO dto) {
         return ResponseEntity.ok(service.salvar(dto));
     }
 

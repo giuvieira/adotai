@@ -1,10 +1,8 @@
 package com.unicap.adotai.controller;
 
-
 import com.unicap.adotai.dto.AdocaoDTO;
 import com.unicap.adotai.model.Adocao;
 import com.unicap.adotai.service.AdocaoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +12,6 @@ import java.util.Optional;
 @RequestMapping("/adocoes")
 public class AdocaoController {
 
-    @Autowired
     private AdocaoService adocaoService;
 
     @PostMapping

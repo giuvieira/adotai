@@ -1,60 +1,71 @@
 package com.unicap.adotai.controller;
 
-
 import com.unicap.adotai.dto.AnimalDTO;
 import com.unicap.adotai.model.Animal;
 import com.unicap.adotai.service.AnimalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/animais")
 public class AnimalController {
 
-    @Autowired
     private AnimalService animalService;
 
-    @PostMapping
-    public ResponseEntity<Animal> criar(@RequestBody AnimalDTO dto) {
+    @PostMapping("/criar")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Animal> criar(@Valid @RequestBody AnimalDTO dto) {
         try {
-            Animal animal = animalService.salvar(dto); 
-            if (animal != null) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(animal); // Retorna o animal com status 201 (Criado)
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Retorna erro caso o animal não tenha sido salvo
-            }
+            Animal animal = animalService.salvar(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(animal);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); 
         }
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<Animal>> listar() {
-        List<Animal> animais = animalService.listarTodos();
-        if (animais.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Retorna 204 se não houver animais
+        try {
+            List<Animal> animais = animalService.listarTodos();
+            if (animais.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(animais);
+        } catch (Exception e) {
+            // Logando o erro para rastrear a causa
+            e.printStackTrace();  // Você pode usar o log de sua preferência aqui
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body(List.of());  // Retorna uma resposta adequada com a mensagem de erro
         }
-        return ResponseEntity.ok(animais);
     }
+
 
     @GetMapping("/{id}")
-    public ResponseEntity<Animal> buscarPorId(@PathVariable Long id) {
-        return animalService.buscarPorId(id)
-                .map(ResponseEntity::ok) 
-                .orElse(ResponseEntity.notFound().build()); 
+    public ResponseEntity<String> buscarPorId(@PathVariable Long id) {
+        try {
+            return animalService.buscarPorId(id)
+                    .map(animal -> ResponseEntity.ok(animal.toString()))
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar o animal.");
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<String> deletar(@PathVariable Long id) {
         try {
-            animalService.deletar(id); 
-            return ResponseEntity.noContent().build(); // Retorna 204 se deletado
+            animalService.deletar(id);
+            return ResponseEntity.noContent().build(); 
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // Mensagem de erro detalhada
         } catch (Exception e) {
-            return ResponseEntity.notFound().build(); // Retorna 404 se o animal não existir ou ocorrer erro
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao deletar o animal.");
         }
     }
 }

@@ -3,7 +3,6 @@ package com.unicap.adotai.service;
 import com.unicap.adotai.dto.OngDTO;
 import com.unicap.adotai.model.Ong;
 import com.unicap.adotai.repository.OngRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Optional;
 @Service
 public class OngService {
 
-    @Autowired
     private OngRepository repository;
 
     public Ong salvar(OngDTO dto) {

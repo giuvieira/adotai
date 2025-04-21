@@ -5,7 +5,6 @@ import com.unicap.adotai.model.Animal;
 import com.unicap.adotai.model.Ong;
 import com.unicap.adotai.repository.AnimalRepository;
 import com.unicap.adotai.repository.OngRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +13,7 @@ import java.util.Optional;
 @Service
 public class AnimalService {
 
-    @Autowired
     private AnimalRepository animalRepository;
-
-    @Autowired
     private OngRepository ongRepository;
 
     public Animal salvar(AnimalDTO dto) {
