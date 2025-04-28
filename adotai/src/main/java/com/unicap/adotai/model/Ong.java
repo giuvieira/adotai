@@ -3,6 +3,8 @@ package com.unicap.adotai.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,6 +27,10 @@ public class Ong extends Usuario {
     private String descricaoAnimais;
 
     @OneToMany(mappedBy = "ong", cascade = CascadeType.ALL)
-    private List<Animal> animais;
-
+    private List<Animal> animais = new ArrayList<>();
+    @OneToMany(mappedBy = "ong", cascade = CascadeType.ALL)
+    private List<Adocao> adocoes = new ArrayList<>(); 
+    @OneToMany(mappedBy = "ong", cascade = CascadeType.ALL)
+    private List<Adotante> adotantes = new ArrayList<>();
+    
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 @Entity
 @Data
 @ToString
@@ -26,10 +28,25 @@ public class Animal {
     private String especie;
     private int idade;
     private String sexo;
-    private String dtEntrada;
     private boolean castrado;
 
-    @ManyToOne
+    @Temporal(TemporalType.DATE)
+    private java.util.Date dtEntrada;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adotante_id")
+    private Adotante adotante;
+    @JoinColumn(name = "adocao_id")
+    private Adocao adocao;
     @JoinColumn(name = "ong_id")
     private Ong ong;
+
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<Adocao> adocoes = new ArrayList<>(); 
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<Adotante> adotantes = new ArrayList<>(); 
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<Animal> animais = new ArrayList<>();
+
+
 }
